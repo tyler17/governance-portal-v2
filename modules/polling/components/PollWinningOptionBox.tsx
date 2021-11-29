@@ -18,7 +18,8 @@ export default function PollWinningOptionBox({
 
   return (
     <Flex sx={{ py: 2, justifyContent: 'center', fontSize: [1, 2], color: 'onSecondary' }}>
-      {tally && tally.winningOptionName ? (
+      Test123
+      {/* {tally && tally.winningOptionName ? (
         <Text as="p" sx={{ textAlign: 'center', px: [3, 4], mb: 1, wordBreak: 'break-word' }}>
           {textWin}:{' '}
           <span sx={{ color: getVoteColor(parseInt(tally.winner), poll.voteType) }}>
@@ -33,7 +34,7 @@ export default function PollWinningOptionBox({
         </Text>
       ) : (
         <SkeletonThemed />
-      )}
+      )} */}
     </Flex>
   );
 }
