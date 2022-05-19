@@ -3,34 +3,25 @@ import shallow from 'zustand/shallow';
 import { Poll, PollCategory } from 'modules/polling/types';
 import FilterButton from 'modules/app/components/FilterButton';
 import useUiFiltersStore from 'modules/app/stores/uiFilters';
-import { useMemo } from 'react';
-import { filterPolls } from '../../helpers/filterPolls';
 import { useAnalytics } from 'modules/app/client/analytics/useAnalytics';
 import { ANALYTICS_PAGES } from 'modules/app/client/analytics/analytics.constants';
 
 export function CategoryFilter({
   categories,
-  polls,
+  filteredPolls,
   ...props
 }: {
   categories: PollCategory[];
-  polls: Poll[];
+  filteredPolls: Poll[];
   sx?: ThemeUIStyleObject;
 }): JSX.Element {
   const { trackButtonClick } = useAnalytics(ANALYTICS_PAGES.POLLING);
-  const [pollFilters, categoryFilter, setCategoryFilter] = useUiFiltersStore(
-    state => [state.pollFilters, state.pollFilters.categoryFilter, state.setCategoryFilter],
+  const [categoryFilter, setCategoryFilter] = useUiFiltersStore(
+    state => [state.pollFilters.categoryFilter, state.setCategoryFilter],
     shallow
   );
 
   const itemsSelected = Object.values(categoryFilter || {}).filter(i => !!i).length;
-
-  const filteredPollsNoCategories = useMemo(() => {
-    return filterPolls({
-      polls,
-      pollFilters
-    });
-  }, [polls, pollFilters]);
 
   return (
     <FilterButton
@@ -58,7 +49,7 @@ export function CategoryFilter({
                 <Flex sx={{ justifyContent: 'space-between', width: '100%' }}>
                   <Text>{category.name}</Text>
                   <Text sx={{ color: 'muted', ml: 3 }}>
-                    {filteredPollsNoCategories.filter(i => i.categories.includes(category.name)).length}
+                    {filteredPolls.filter(i => i.categories.includes(category.name)).length}
                   </Text>
                 </Flex>
               </Label>

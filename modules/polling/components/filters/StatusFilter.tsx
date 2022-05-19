@@ -4,16 +4,19 @@ import { Poll } from 'modules/polling/types';
 import FilterButton from 'modules/app/components/FilterButton';
 import useUiFiltersStore from 'modules/app/stores/uiFilters';
 import { isActivePoll } from 'modules/polling/helpers/utils';
-import { useMemo } from 'react';
-import { filterPolls } from '../../helpers/filterPolls';
 import { useAnalytics } from 'modules/app/client/analytics/useAnalytics';
 import { ANALYTICS_PAGES } from 'modules/app/client/analytics/analytics.constants';
 
-export function StatusFilter({ polls, ...props }: { polls: Poll[]; sx?: ThemeUIStyleObject }): JSX.Element {
+export function StatusFilter({
+  filteredPolls,
+  ...props
+}: {
+  filteredPolls: Poll[];
+  sx?: ThemeUIStyleObject;
+}): JSX.Element {
   const { trackButtonClick } = useAnalytics(ANALYTICS_PAGES.POLLING);
-  const [pollFilters, showPollActive, showPollEnded, setShowPollActive, setShowPollEnded] = useUiFiltersStore(
+  const [showPollActive, showPollEnded, setShowPollActive, setShowPollEnded] = useUiFiltersStore(
     state => [
-      state.pollFilters,
       state.pollFilters.showPollActive,
       state.pollFilters.showPollEnded,
       state.setShowPollActive,
@@ -21,17 +24,6 @@ export function StatusFilter({ polls, ...props }: { polls: Poll[]; sx?: ThemeUIS
     ],
     shallow
   );
-
-  const filteredPollsOnlyCategories = useMemo(() => {
-    return filterPolls({
-      polls,
-      pollFilters: {
-        ...pollFilters,
-        showPollActive: true,
-        showPollEnded: true
-      }
-    });
-  }, [polls, pollFilters]);
 
   const filtersSelected = (showPollActive ? 1 : 0) + (showPollEnded ? 1 : 0);
 
@@ -56,9 +48,7 @@ export function StatusFilter({ polls, ...props }: { polls: Poll[]; sx?: ThemeUIS
             />
             <Flex sx={{ justifyContent: 'space-between', width: '100%' }}>
               <Text>Active Polls</Text>
-              <Text sx={{ color: 'muted', ml: 3 }}>
-                {filteredPollsOnlyCategories.filter(p => isActivePoll(p)).length}
-              </Text>
+              <Text sx={{ color: 'muted', ml: 3 }}>{filteredPolls.filter(p => isActivePoll(p)).length}</Text>
             </Flex>
           </Label>
         </Flex>
@@ -74,9 +64,7 @@ export function StatusFilter({ polls, ...props }: { polls: Poll[]; sx?: ThemeUIS
             />
             <Flex sx={{ justifyContent: 'space-between', width: '100%' }}>
               <Text>Ended Polls</Text>
-              <Text sx={{ color: 'muted', ml: 3 }}>
-                {filteredPollsOnlyCategories.filter(p => !isActivePoll(p)).length}
-              </Text>
+              <Text sx={{ color: 'muted', ml: 3 }}>{filteredPolls.filter(p => !isActivePoll(p)).length}</Text>
             </Flex>
           </Label>
         </Flex>

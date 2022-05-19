@@ -3,38 +3,29 @@ import shallow from 'zustand/shallow';
 import { Poll, PollCategory } from 'modules/polling/types';
 import FilterButton from 'modules/app/components/FilterButton';
 import useUiFiltersStore from 'modules/app/stores/uiFilters';
-import { useMemo } from 'react';
-import { filterPolls } from '../../helpers/filterPolls';
 import { POLL_VOTE_TYPE } from 'modules/polling/polling.constants';
 
 export function PollTypeFilter({
-  polls,
+  filteredPolls,
   ...props
 }: {
   categories: PollCategory[];
-  polls: Poll[];
+  filteredPolls: Poll[];
   sx?: ThemeUIStyleObject;
 }): JSX.Element {
-  const [pollFilters, pollVoteType, setPollVoteType] = useUiFiltersStore(
-    state => [state.pollFilters, state.pollFilters.pollVoteType, state.setPollVoteType],
+  const [pollVoteType, setPollVoteType] = useUiFiltersStore(
+    state => [state.pollFilters.pollVoteType, state.setPollVoteType],
     shallow
   );
 
-  const itemsSelected = Object.values(pollVoteType || {}).filter(i => !!i);
-
-  const filteredPolls = useMemo(() => {
-    return filterPolls({
-      polls,
-      pollFilters
-    });
-  }, [polls, pollFilters]);
+  const itemsSelected = Object.values(pollVoteType || {}).filter(i => !!i).length;
 
   return (
     <FilterButton
-      name={() => `Type ${itemsSelected.length > 0 ? `(${itemsSelected.length})` : ''}`}
+      name={() => `Type ${itemsSelected > 0 ? `(${itemsSelected})` : ''}`}
       listVariant="cards.noPadding"
       data-testid="poll-filters-dropdown"
-      active={itemsSelected.length > 0}
+      active={itemsSelected > 0}
       {...props}
     >
       <Box p={2} sx={{ maxHeight: '300px', overflowY: 'scroll' }}>

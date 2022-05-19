@@ -43,17 +43,10 @@ import { SupportedNetworks } from 'modules/web3/constants/networks';
 
 const PollingOverview = ({ polls, categories }: PollingPageData) => {
   const { trackButtonClick } = useAnalytics(ANALYTICS_PAGES.POLLING);
-  const [pollFilters, setCategoryFilter, showHistorical, setShowHistorical, resetPollFilters] =
-    useUiFiltersStore(
-      state => [
-        state.pollFilters,
-        state.setCategoryFilter,
-        state.pollFilters.showHistorical,
-        state.setShowHistorical,
-        state.resetPollFilters
-      ],
-      shallow
-    );
+  const [pollFilters, setCategoryFilter, resetPollFilters] = useUiFiltersStore(
+    state => [state.pollFilters, state.setCategoryFilter, state.resetPollFilters],
+    shallow
+  );
   const router = useRouter();
 
   useEffect(() => {
@@ -77,6 +70,7 @@ const PollingOverview = ({ polls, categories }: PollingPageData) => {
 
   const [activePolls, setActivePolls] = useState([]);
   const [historicalPolls, setHistoricalPolls] = useState([]);
+  const [showHistorical, setShowHistorical] = useState(false);
 
   // only for mobile
   const [showFilters, setShowFilters] = useState(false);
@@ -90,13 +84,15 @@ const PollingOverview = ({ polls, categories }: PollingPageData) => {
   useEffect(() => {
     const [active, historical] = partition(filteredPolls, isActivePoll);
 
-    if (active.length === 0) {
-      setShowHistorical(true);
-    }
-
     setActivePolls(active);
     setHistoricalPolls(historical);
   }, [filteredPolls]);
+
+  useEffect(() => {
+    if (activePolls.length === 0) {
+      setShowHistorical(true);
+    }
+  }, [activePolls, historicalPolls]);
 
   const loadMore = () => {
     setNumHistoricalGroupingsLoaded(
@@ -148,10 +144,10 @@ const PollingOverview = ({ polls, categories }: PollingPageData) => {
             <Flex sx={{ flexDirection: ['column', 'row'] }}>
               <Flex sx={{ justifyContent: ['center', 'flex-start'], alignItems: 'center', flexWrap: 'wrap' }}>
                 <PollTitleSearch sx={{ m: 2 }} />
-                <CategoryFilter categories={categories} polls={polls} sx={{ m: 2 }} />
-                <StatusFilter polls={polls} sx={{ m: 2 }} />
-                <PollTypeFilter categories={categories} polls={polls} sx={{ m: 2 }} />
-                <DateFilter sx={{ m: 2 }} />
+                <CategoryFilter categories={categories} sx={{ m: 2 }} filteredPolls={filteredPolls} />
+                <StatusFilter sx={{ m: 2 }} filteredPolls={filteredPolls} />
+                <PollTypeFilter categories={categories} sx={{ m: 2 }} filteredPolls={filteredPolls} />
+                <DateFilter sx={{ m: 2 }} filteredPolls={filteredPolls} />
               </Flex>
               <Button
                 variant={'outline'}
