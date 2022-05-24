@@ -23,16 +23,38 @@ import NextNprogress from 'nextjs-progressbar';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { BallotProvider } from 'modules/polling/context/BallotContext';
-import debug from 'debug';
+// import debug from 'debug';
 import Script from 'next/script';
 import Banner from 'modules/app/components/layout/header/Banner';
 import bannerContent from 'modules/home/data/bannerContent.json';
-const vitalslog = debug('govpo:vitals');
+// const vitalslog = debug('govpo:vitals');
+import { NextWebVitalsMetric } from 'next/app';
 
 const Web3ReactProviderDefault = dynamic(() => import('../modules/web3/components/DefaultProvider'), {
   ssr: false
 });
-export const reportWebVitals = vitalslog;
+// export const reportWebVitals = vitalslog;
+
+// Add to pages/_app.ts
+// axiom web vitals logging https://www.axiom.co/docs/integrations/vercel
+export function reportWebVitals(metric: NextWebVitalsMetric): void {
+  const url = process.env.NEXT_PUBLIC_AXIOM_INGEST_ENDPOINT;
+
+  if (!url) {
+    return;
+  }
+
+  const body = JSON.stringify({
+    route: window.__NEXT_DATA__.page,
+    ...metric
+  });
+
+  if (navigator.sendBeacon) {
+    navigator.sendBeacon(url, body);
+  } else {
+    fetch(url, { body, method: 'POST', keepalive: true });
+  }
+}
 
 const MyApp = ({ Component, pageProps }: AppProps): React.ReactElement => {
   ethers.utils.Logger.setLogLevel(ethers.utils.Logger.levels.ERROR);
