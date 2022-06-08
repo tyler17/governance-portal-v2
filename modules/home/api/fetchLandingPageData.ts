@@ -31,7 +31,7 @@ export async function fetchLandingPageData(
   network: SupportedNetworks,
   useApi = false
 ): Promise<LandingPageData> {
-  const EXEC_FETCH_SIZE = 3;
+  const EXEC_FETCH_SIZE = 10;
   const EXEC_SORT_BY = 'active';
 
   const responses = useApi
