@@ -1,5 +1,5 @@
 import { SupportedChainId } from 'modules/web3/constants/chainID';
-import { useActiveWeb3React } from 'modules/web3/hooks/useActiveWeb3React';
+import { useWeb3React } from '@web3-react/core';
 import { useEffect, useState, ReactChild, CSSProperties } from 'react';
 
 import Image from './Image';
@@ -14,7 +14,7 @@ export interface DavatarProps {
 }
 
 export default function Davatar({ size, address, defaultComponent, style }: DavatarProps): JSX.Element {
-  const { chainId, provider } = useActiveWeb3React();
+  const { chainId, provider } = useWeb3React();
   const [avatarUri, setAvatarUri] = useState<string | null>(null);
 
   useEffect(() => {

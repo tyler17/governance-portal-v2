@@ -1,4 +1,4 @@
-import { useActiveWeb3React } from 'modules/web3/hooks/useActiveWeb3React';
+import { useWeb3React } from '@web3-react/core';
 import { useDelegateContractExpirationDate } from 'modules/delegates/hooks/useDelegateContractExpirationDate';
 import { getNewOwnerFromPrevious, getPreviousOwnerFromNew } from 'modules/migration/delegateAddressLinks';
 
@@ -9,7 +9,7 @@ export function useLinkedDelegateInfo(): {
   previousOwnerConnected: boolean;
   newOwnerHasDelegateContract: boolean;
 } {
-  const { account: address, network } = useActiveWeb3React();
+  const { account: address, network } = useWeb3React();
 
   const { data: delegateContractExpirationDate } = useDelegateContractExpirationDate();
 

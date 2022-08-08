@@ -1,7 +1,7 @@
 import { Button, Flex, Text, Link as ExternalLink } from 'theme-ui';
 import { getEtherscanLink } from 'modules/web3/helpers/getEtherscanLink';
 import { Delegate } from '../../types';
-import { useActiveWeb3React } from 'modules/web3/hooks/useActiveWeb3React';
+import { useWeb3React } from '@web3-react/core';
 import { BigNumber } from 'ethers';
 import { formatValue } from 'lib/string';
 
@@ -14,7 +14,7 @@ type Props = {
 
 export const ConfirmContent = ({ mkrToDeposit, delegate, onClick, onBack }: Props): JSX.Element => {
   const { address, voteDelegateAddress } = delegate;
-  const { network } = useActiveWeb3React();
+  const { network } = useWeb3React();
 
   return (
     <Flex sx={{ flexDirection: 'column', textAlign: 'center' }}>

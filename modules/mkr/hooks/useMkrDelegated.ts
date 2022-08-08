@@ -2,7 +2,7 @@ import useSWR from 'swr';
 import abi from 'modules/contracts/ethers/voteDelegate.json';
 
 import { getEthersContracts } from 'modules/web3/helpers/getEthersContracts';
-import { useActiveWeb3React } from 'modules/web3/hooks/useActiveWeb3React';
+import { useWeb3React } from '@web3-react/core';
 import { BigNumber } from 'ethers';
 import { VoteDelegate } from 'types/ethers-contracts';
 
@@ -18,7 +18,7 @@ export const useMkrDelegated = (
   userAddress?: string,
   voteDelegateAddress?: string
 ): TokenAllowanceResponse => {
-  const { chainId, provider, account } = useActiveWeb3React();
+  const { chainId, provider, account } = useWeb3React();
 
   const { data, error, mutate } = useSWR(
     userAddress && voteDelegateAddress ? ['/user/mkr-delegated', voteDelegateAddress, userAddress] : null,

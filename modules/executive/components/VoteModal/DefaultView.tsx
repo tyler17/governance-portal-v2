@@ -21,7 +21,7 @@ import { useVoteProxyVote } from 'modules/executive/hooks/useVoteProxyVote';
 import { useAccount } from 'modules/app/hooks/useAccount';
 import { formatValue } from 'lib/string';
 import { BigNumber, utils } from 'ethers';
-import { useActiveWeb3React } from 'modules/web3/hooks/useActiveWeb3React';
+import { useWeb3React } from '@web3-react/core';
 import { sign } from 'modules/web3/helpers/sign';
 import { ExecutiveCommentsRequestBody } from 'modules/comments/types/comments';
 import { ExternalLink } from 'modules/app/components/ExternalLink';
@@ -51,7 +51,7 @@ export default function DefaultVoteModalView({
   const bpi = useBreakpointIndex();
 
   const { account, voteProxyContractAddress, voteDelegateContractAddress } = useAccount();
-  const { network, provider } = useActiveWeb3React();
+  const { network, provider } = useWeb3React();
   const addressLockedMKR = voteDelegateContractAddress || voteProxyContractAddress || account;
   const { data: lockedMkr, mutate: mutateLockedMkr } = useLockedMkr(
     addressLockedMKR,

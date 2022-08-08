@@ -1,5 +1,5 @@
 import useSWR from 'swr';
-import { useActiveWeb3React } from 'modules/web3/hooks/useActiveWeb3React';
+import { useWeb3React } from '@web3-react/core';
 import { gqlRequest } from '../gqlRequest';
 
 type GqlQueryResponse = {
@@ -17,7 +17,7 @@ export const useGqlQuery = ({
   variables?: Record<string, string>;
   cacheKey: string;
 }): GqlQueryResponse => {
-  const { chainId } = useActiveWeb3React();
+  const { chainId } = useWeb3React();
 
   const { data, error } = useSWR(`gql-query/${chainId}/${cacheKey}`, async () => {
     return await gqlRequest({ chainId, query, variables });

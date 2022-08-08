@@ -1,5 +1,5 @@
 import { useDelegatedTo } from 'modules/delegates/hooks/useDelegatedTo';
-import { useActiveWeb3React } from 'modules/web3/hooks/useActiveWeb3React';
+import { useWeb3React } from '@web3-react/core';
 import { useDelegateContractExpirationDate } from 'modules/delegates/hooks/useDelegateContractExpirationDate';
 import { isAboutToExpireCheck, isExpiredCheck } from '../helpers/expirationChecks';
 
@@ -9,7 +9,7 @@ export function useMigrationStatus(): {
   isDelegateContractExpired: boolean;
   isDelegateContractExpiring: boolean;
 } {
-  const { account: address, network } = useActiveWeb3React();
+  const { account: address, network } = useWeb3React();
 
   const { data: delegatedToData } = useDelegatedTo(address, network);
   const { data: delegateContractExpirationDate } = useDelegateContractExpirationDate();
