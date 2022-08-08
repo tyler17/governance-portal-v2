@@ -29,6 +29,7 @@ import { getEtherscanLink } from 'modules/web3/helpers/getEtherscanLink';
 import logger from 'lib/logger';
 import { executiveSupportersCacheKey, githubExecutivesCacheKey } from 'modules/cache/constants/cache-keys';
 import { invalidateCache } from 'modules/cache/invalidateCache';
+import { useNetwork } from 'modules/web3/hooks/useNetwork';
 
 export default function DefaultVoteModalView({
   proposal,
@@ -51,7 +52,8 @@ export default function DefaultVoteModalView({
   const bpi = useBreakpointIndex();
 
   const { account, voteProxyContractAddress, voteDelegateContractAddress } = useAccount();
-  const { network, provider } = useWeb3React();
+  const { provider } = useWeb3React();
+  const { network } = useNetwork();
   const addressLockedMKR = voteDelegateContractAddress || voteProxyContractAddress || account;
   const { data: lockedMkr, mutate: mutateLockedMkr } = useLockedMkr(
     addressLockedMKR,
@@ -78,22 +80,24 @@ export default function DefaultVoteModalView({
   const [isFetchingNonce, setIsFetcingNonce] = useState(false);
 
   const signComment = async () => {
-    try {
-      setIsFetcingNonce(true);
-      const data = await fetchJson('/api/comments/nonce', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          address: account?.toLowerCase()
-        })
-      });
-      setIsFetcingNonce(false);
-      const signed = await sign(account?.toLowerCase() as string, data.nonce, provider);
-      setSignedMessage(signed);
-    } catch (e) {
-      setIsFetcingNonce(false);
+    if (provider) {
+      try {
+        setIsFetcingNonce(true);
+        const data = await fetchJson('/api/comments/nonce', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            address: account?.toLowerCase()
+          })
+        });
+        setIsFetcingNonce(false);
+        const signed = await sign(account?.toLowerCase() as string, data.nonce, provider);
+        setSignedMessage(signed);
+      } catch (e) {
+        setIsFetcingNonce(false);
+      }
     }
   };
 

@@ -18,6 +18,7 @@ import { parsePollOptions } from '../helpers/parsePollOptions';
 import logger from 'lib/logger';
 import { getPollTallyCacheKey } from 'modules/cache/constants/cache-keys';
 import { invalidateCache } from 'modules/cache/invalidateCache';
+import { useNetwork } from 'modules/web3/hooks/useNetwork';
 
 const ONE_DAY_MS = 24 * 60 * 60 * 1000;
 
@@ -102,7 +103,8 @@ export const BallotProvider = ({ children }: PropTypes): React.ReactElement => {
     }
   };
 
-  const { network, provider } = useWeb3React();
+  const { provider } = useWeb3React();
+  const { network } = useNetwork();
   // Reset ballot on network change
   useEffect(() => {
     setPreviousBallot({});
@@ -167,7 +169,7 @@ export const BallotProvider = ({ children }: PropTypes): React.ReactElement => {
   };
 
   const signComments = async () => {
-    if (!account) {
+    if (!account || !provider) {
       return;
     }
 

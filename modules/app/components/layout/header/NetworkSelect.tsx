@@ -3,8 +3,6 @@ import { useBreakpointIndex } from '@theme-ui/match-media';
 import { Box, Flex, Text, Close, ThemeUICSSObject } from 'theme-ui';
 import { Icon } from '@makerdao/dai-ui-icons';
 import { DialogOverlay, DialogContent } from '@reach/dialog';
-import { Network } from '@web3-react/network';
-import { WalletConnect } from '@web3-react/walletconnect';
 import { fadeIn, slideUp } from 'lib/keyframes';
 import ConnectNetworkButton from 'modules/web3/components/ConnectNetworkButton';
 import { useWeb3React } from '@web3-react/core';
@@ -58,17 +56,13 @@ const NetworkSelect = (): React.ReactElement => {
         return;
       }
 
-      if (connector instanceof WalletConnect || connector instanceof Network) {
-        connector
-          .activate(desiredChainId === -1 ? undefined : desiredChainId)
-          .then(() => setError(undefined))
-          .catch(setError);
-      } else {
-        connector
-          .activate(desiredChainId === -1 ? undefined : desiredChainId)
-          .then(() => setError(undefined))
-          .catch(setError);
+      try {
+        connector.activate(desiredChainId === -1 ? undefined : desiredChainId);
+      } catch (err) {
+        setError(err);
       }
+
+      setError(undefined);
     },
     [connector, chainId, setError]
   );
@@ -125,6 +119,11 @@ const NetworkSelect = (): React.ReactElement => {
             <Close sx={closeButtonStyle} aria-label="close" onClick={close} />
           </Flex>
           {chainId && networkOptions}
+          {error && (
+            <Text sx={{ mt: 2 }} variant="error">
+              {error}
+            </Text>
+          )}
         </DialogContent>
       </DialogOverlay>
     </Box>

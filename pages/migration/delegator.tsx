@@ -15,9 +15,11 @@ import { Icon } from '@makerdao/dai-ui-icons';
 import Link from 'next/link';
 import PageLoadingPlaceholder from 'modules/app/components/PageLoadingPlaceholder';
 import { ExternalLink } from 'modules/app/components/ExternalLink';
+import { useNetwork } from 'modules/web3/hooks/useNetwork';
 
 export default function DelegateMigrationPage(): React.ReactElement {
-  const { account, network } = useWeb3React();
+  const { account } = useWeb3React();
+  const { network } = useNetwork();
 
   const { data: delegatesData } = useDelegates();
 
