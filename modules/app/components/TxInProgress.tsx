@@ -2,9 +2,9 @@ import { Flex, Text, Box } from '@theme-ui/components';
 import { Icon } from '@makerdao/dai-ui-icons';
 import TxIndicators from 'modules/app/components/TxIndicators';
 import { TXMined } from 'modules/web3/types/transaction';
-import { useWeb3React } from '@web3-react/core';
 import { getEtherscanLink } from 'modules/web3/helpers/getEtherscanLink';
 import { ExternalLink } from 'modules/app/components/ExternalLink';
+import { useNetwork } from 'modules/web3/hooks/useNetwork';
 
 type Props = {
   tx: any;
@@ -13,7 +13,7 @@ type Props = {
 };
 
 export const TxInProgress = ({ tx, txPending, setTxId }: Props): JSX.Element => {
-  const { network } = useWeb3React();
+  const { network } = useNetwork();
 
   return (
     <Flex sx={{ flexDirection: 'column', textAlign: 'center' }}>

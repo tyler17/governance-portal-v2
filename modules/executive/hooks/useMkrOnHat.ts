@@ -2,7 +2,7 @@ import useSWR from 'swr';
 import { useContracts } from 'modules/web3/hooks/useContracts';
 import { BigNumber } from 'ethers';
 import { getChiefApprovals } from 'modules/web3/api/getChiefApprovals';
-import { useWeb3React } from '@web3-react/core';
+import { useNetwork } from 'modules/web3/hooks/useNetwork';
 
 type MkrOnHatResponse = {
   data?: BigNumber;
@@ -12,7 +12,7 @@ type MkrOnHatResponse = {
 };
 
 export const useMkrOnHat = (): MkrOnHatResponse => {
-  const { network } = useWeb3React();
+  const { network } = useNetwork();
   const { chief } = useContracts();
 
   const { data, error, mutate } = useSWR(`${chief.address}/mkr-on-hat`, async () => {

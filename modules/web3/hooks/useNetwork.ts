@@ -3,10 +3,7 @@ import { useWeb3React } from '@web3-react/core';
 import logger from 'lib/logger';
 import { chainIdToNetworkName } from '../helpers/chain';
 
-// TODO type this
-// TODO separate network from this hook
-
-export function useWeb3React(): any {
+export function useNetwork(): any {
   const context = useWeb3React<Web3Provider>();
 
   let network;

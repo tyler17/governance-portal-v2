@@ -12,8 +12,8 @@ import { useMkrOnHat } from 'modules/executive/hooks/useMkrOnHat';
 import { formatValue } from 'lib/string';
 import { useContractAddress } from 'modules/web3/hooks/useContractAddress';
 import { getEtherscanLink } from 'modules/web3/helpers/getEtherscanLink';
-import { useWeb3React } from '@web3-react/core';
 import { Tokens } from 'modules/web3/constants/tokens';
+import { useNetwork } from 'modules/web3/hooks/useNetwork';
 
 type StatField =
   | 'chief contract'
@@ -32,7 +32,7 @@ export default function SystemStatsSidebar({
   fields: StatField[];
   className?: string;
 }): JSX.Element {
-  const { network } = useWeb3React();
+  const { network } = useNetwork();
 
   const statsMap = {
     'chief contract': key => {

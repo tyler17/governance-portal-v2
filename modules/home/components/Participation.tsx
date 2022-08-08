@@ -7,11 +7,11 @@ import { format, sub } from 'date-fns';
 import ParticipationChart from './ParticipationChart';
 import forumPosts from '../data/forumPosts.json';
 import { Delegate } from 'modules/delegates/types';
-import { useWeb3React } from '@web3-react/core';
 import SkeletonThemed from 'modules/app/components/SkeletonThemed';
 import { AllLocksResponse, ForumPost } from '../types/participation';
 import DelegateAvatarNameLight from 'modules/delegates/components/DelegateAvatarNameLight';
 import { ErrorBoundary } from 'modules/app/components/ErrorBoundary';
+import { useNetwork } from 'modules/web3/hooks/useNetwork';
 
 const ForumPosts = ({ posts, bpi }: { posts: ForumPost[]; bpi: number }) => {
   return (
@@ -77,7 +77,7 @@ export default function Participation({
   activeDelegates: Delegate[];
   bpi: number;
 }): React.ReactElement {
-  const { network } = useWeb3React();
+  const { network } = useNetwork();
   const MONTHS_PAST = 6;
   // This makes sure the timestamp is the same throughout the day so the SWR cache-key doesn't change
   const unixtimeStart =

@@ -13,7 +13,6 @@ import { PlayButton } from 'modules/home/components/PlayButton';
 import PageLoadingPlaceholder from 'modules/app/components/PageLoadingPlaceholder';
 import VideoModal from 'modules/app/components/VideoModal';
 import { isDefaultNetwork } from 'modules/web3/helpers/networks';
-import { useWeb3React } from '@web3-react/core';
 import { ErrorBoundary } from 'modules/app/components/ErrorBoundary';
 import Skeleton from 'react-loading-skeleton';
 import { SupportedNetworks } from 'modules/web3/constants/networks';
@@ -39,6 +38,7 @@ import { LandingPageData } from 'modules/home/api/fetchLandingPageData';
 import { filterDelegates } from 'modules/delegates/helpers/filterDelegates';
 import { shuffleArray } from 'lib/common/shuffleArray';
 import { useAllDelegates } from 'modules/gql/hooks/useAllDelegates';
+import { useNetwork } from 'modules/web3/hooks/useNetwork';
 
 const LandingPage = ({ proposals, polls, delegates, stats, mkrOnHat, hat, mkrInChief }: LandingPageData) => {
   const bpi = useBreakpointIndex();
@@ -290,7 +290,7 @@ export default function Index({
   hat: prefetchedHat,
   mkrInChief: prefetchedMkrInChief
 }: LandingPageData): JSX.Element {
-  const { network } = useWeb3React();
+  const { network } = useNetwork();
   const delegatesData = useAllDelegates();
 
   const fallbackData = isDefaultNetwork(network)

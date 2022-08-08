@@ -2,12 +2,11 @@ import { useState } from 'react';
 import { Flex, Text, Box, Button, Link as ExternalLink } from 'theme-ui';
 import { Icon } from '@makerdao/dai-ui-icons';
 import { useBreakpointIndex } from '@theme-ui/match-media';
-
 import { formatAddress } from 'lib/utils';
-import { useWeb3React } from '@web3-react/core';
 import AddressIcon from 'modules/address/components/AddressIcon';
 import { getEtherscanLink } from 'modules/web3/helpers/getEtherscanLink';
 import { WalletName } from 'modules/web3/constants/wallets';
+import { useNetwork } from 'modules/web3/hooks/useNetwork';
 
 type Props = {
   address: string;
@@ -19,7 +18,7 @@ type Props = {
 const AccountBox = ({ address, accountName, change, disconnect }: Props): JSX.Element => {
   const bpi = useBreakpointIndex();
   const [copied, setCopied] = useState(false);
-  const { network } = useWeb3React();
+  const { network } = useNetwork();
 
   return (
     <Flex

@@ -6,9 +6,9 @@ import { Box, Button, Flex, Text, Link as ThemeUILink } from 'theme-ui';
 import { getVoteColor } from '../helpers/getVoteColor';
 import { Poll } from '../types';
 import { Icon } from '@makerdao/dai-ui-icons';
-import { useWeb3React } from '@web3-react/core';
 import InternalIcon from 'modules/app/components/Icon';
 import { isInputFormatSingleChoice } from '../helpers/utils';
+import { useNetwork } from 'modules/web3/hooks/useNetwork';
 
 export default function PollVotedOption({
   poll,
@@ -23,7 +23,7 @@ export default function PollVotedOption({
   transactionHash: string;
   votingWeight?: BigNumber;
 }): React.ReactElement {
-  const { network } = useWeb3React();
+  const { network } = useNetwork();
 
   return (
     <Box>

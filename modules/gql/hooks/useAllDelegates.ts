@@ -1,9 +1,9 @@
-import { useWeb3React } from '@web3-react/core';
 import useSWR, { SWRResponse, useSWRConfig } from 'swr';
 import { DelegatesAPIResponse } from 'modules/delegates/types';
+import { useNetwork } from 'modules/web3/hooks/useNetwork';
 
 export const useAllDelegates = (): SWRResponse<DelegatesAPIResponse> => {
-  const { network } = useWeb3React();
+  const { network } = useNetwork();
   const { cache } = useSWRConfig();
   const dataKey = `/api/delegates?network=${network}`;
 

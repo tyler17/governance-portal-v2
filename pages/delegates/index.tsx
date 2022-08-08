@@ -23,12 +23,12 @@ import { DelegatesSortFilter } from 'modules/delegates/components/filters/Delega
 import { DelegatesTagFilter } from 'modules/delegates/components/filters/DelegatesTagFilter';
 import { filterDelegates } from 'modules/delegates/helpers/filterDelegates';
 import { useAccount } from 'modules/app/hooks/useAccount';
-import { useWeb3React } from '@web3-react/core';
 import { ErrorBoundary } from 'modules/app/components/ErrorBoundary';
 import { InternalLink } from 'modules/app/components/InternalLink';
 import { DelegatesPageData, fetchDelegatesPageData } from 'modules/delegates/api/fetchDelegatesPageData';
 import { SupportedNetworks } from 'modules/web3/constants/networks';
 import { SearchBar } from 'modules/app/components/filters/SearchBar';
+import { useNetwork } from 'modules/web3/hooks/useNetwork';
 
 const Delegates = ({ delegates, stats, tags }: DelegatesPageData) => {
   const { voteDelegateContractAddress } = useAccount();
@@ -247,7 +247,7 @@ export default function DelegatesPage({
   stats: prefetchedStats,
   tags: prefetchedTags
 }: DelegatesPageData): JSX.Element {
-  const { network } = useWeb3React();
+  const { network } = useNetwork();
 
   const fallbackData = isDefaultNetwork(network)
     ? {

@@ -3,7 +3,6 @@ import { Box, Button, Card, Flex, Heading, Text, Input } from 'theme-ui';
 import PrimaryLayout from 'modules/app/components/layout/layouts/Primary';
 import Stack from 'modules/app/components/layout/layouts/Stack';
 import { HeadComponent } from 'modules/app/components/layout/Head';
-import { useWeb3React } from '@web3-react/core';
 import { fetchJson } from 'lib/fetchJson';
 import { ErrorBoundary } from 'modules/app/components/ErrorBoundary';
 import {
@@ -16,9 +15,10 @@ import {
 } from 'modules/cache/constants/cache-keys';
 import { invalidateCache } from 'modules/cache/invalidateCache';
 import { toast } from 'react-toastify';
+import { useNetwork } from 'modules/web3/hooks/useNetwork';
 
 const DashboardPage = (): React.ReactElement => {
-  const { network } = useWeb3React();
+  const { network } = useNetwork();
   const [loading, setLoading] = useState(false);
   const [pollId, setPollId] = useState('');
   const [password, setPassword] = useState('');

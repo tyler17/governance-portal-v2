@@ -5,11 +5,11 @@ import { Icon } from '@makerdao/dai-ui-icons';
 import { getEtherscanLink } from 'modules/web3/helpers/getEtherscanLink';
 import { Address } from './Address';
 import Tooltip from 'modules/app/components/Tooltip';
-import { useWeb3React } from '@web3-react/core';
 import { useAccount } from 'modules/app/hooks/useAccount';
 import { useDelegateAddressMap } from 'modules/delegates/hooks/useDelegateAddressMap';
 import { useVoteProxyAddress } from 'modules/app/hooks/useVoteProxyAddress';
 import { limitString } from 'lib/string';
+import { useNetwork } from 'modules/web3/hooks/useNetwork';
 
 type PropTypes = {
   address: string;
@@ -24,7 +24,7 @@ export default function AddressIconBox({
   width = 41,
   limitTextLength = 0
 }: PropTypes): React.ReactElement {
-  const { network } = useWeb3React();
+  const { network } = useNetwork();
 
   const { account, voteProxyContractAddress, voteDelegateContractAddress } = useAccount();
   const { data: delegateAddresses } = useDelegateAddressMap();

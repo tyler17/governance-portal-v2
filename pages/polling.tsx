@@ -20,7 +20,6 @@ import PollOverviewCard from 'modules/polling/components/PollOverviewCard';
 import { SearchBar } from 'modules/app/components/filters/SearchBar';
 import { CategoryFilter } from 'modules/polling/components/filters/CategoryFilter';
 import { StatusFilter } from 'modules/polling/components/filters/StatusFilter';
-// import { PollTypeFilter } from 'modules/polling/components/filters/PollTypeFilter';
 import { DateFilter } from 'modules/polling/components/filters/DateFilter';
 import BallotBox from 'modules/polling/components/BallotBox';
 import ResourceBox from 'modules/app/components/ResourceBox';
@@ -33,7 +32,6 @@ import { ANALYTICS_PAGES } from 'modules/app/client/analytics/analytics.constant
 import { useAllUserVotes } from 'modules/polling/hooks/useAllUserVotes';
 import { HeadComponent } from 'modules/app/components/layout/Head';
 import { filterPolls } from 'modules/polling/helpers/filterPolls';
-import { useWeb3React } from '@web3-react/core';
 import { useAccount } from 'modules/app/hooks/useAccount';
 import { isDefaultNetwork } from 'modules/web3/helpers/networks';
 import { ErrorBoundary } from 'modules/app/components/ErrorBoundary';
@@ -43,6 +41,7 @@ import { SupportedNetworks } from 'modules/web3/constants/networks';
 import PollsSort from 'modules/polling/components/filters/PollsSort';
 import usePollsStore from 'modules/polling/stores/polls';
 import { PollTypeFilter } from 'modules/polling/components/filters/PollTypeFilter';
+import { useNetwork } from 'modules/web3/hooks/useNetwork';
 
 const getSortCriteria = (sort: PollsSortEnum | null) => {
   if (!sort) sort = PollsSortEnum.endDateAsc;
@@ -101,7 +100,7 @@ const PollingOverview = ({ polls, tags }: PollingPageData) => {
   const [numHistoricalGroupingsLoaded, setNumHistoricalGroupingsLoaded] = useState(3);
   const loader = useRef<HTMLDivElement>(null);
   const bpi = useBreakpointIndex();
-  const { network } = useWeb3React();
+  const { network } = useNetwork();
 
   const filteredPolls = useMemo(() => {
     return filterPolls({
@@ -350,7 +349,7 @@ export default function PollingOverviewPage({
   polls: prefetchedPolls,
   tags: prefetchedCategories
 }: PollingPageData): JSX.Element {
-  const { network } = useWeb3React();
+  const { network } = useNetwork();
 
   const fallbackData = isDefaultNetwork(network)
     ? {

@@ -1,13 +1,13 @@
 import BigNumber from 'lib/bigNumberJs';
 import { Card, Text, Spinner } from 'theme-ui';
 import { useBreakpointIndex } from '@theme-ui/match-media';
-import { useWeb3React } from '@web3-react/core';
 import { formatRound } from 'lib/utils';
 import { formatDateWithTime, formatDateWithoutTime } from 'lib/datetime';
 import { cutMiddle } from 'lib/string';
 import { AllEsmJoinsRecord } from 'modules/gql/generated/graphql';
 import { getEtherscanLink } from 'modules/web3/helpers/getEtherscanLink';
 import { ExternalLink } from 'modules/app/components/ExternalLink';
+import { useNetwork } from 'modules/web3/hooks/useNetwork';
 
 type Props = {
   allEsmJoins: AllEsmJoinsRecord[] | undefined;
@@ -15,7 +15,7 @@ type Props = {
 
 const ESMHistory = ({ allEsmJoins }: Props): JSX.Element => {
   const bpi = useBreakpointIndex();
-  const { network } = useWeb3React();
+  const { network } = useNetwork();
 
   return (
     <Card mt={3} p={3} pb={4}>

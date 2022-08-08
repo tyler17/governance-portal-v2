@@ -19,7 +19,6 @@ import { objectToGetParams, getNumberWithOrdinal } from 'lib/utils';
 import { SubmitBallotsButtons } from 'modules/polling/components/SubmitBallotButtons';
 import CommentTextBox from 'modules/comments/components/CommentTextBox';
 import { useAccount } from 'modules/app/hooks/useAccount';
-import { useWeb3React } from '@web3-react/core';
 import { isDefaultNetwork } from 'modules/web3/helpers/networks';
 import { BallotContext } from 'modules/polling/context/BallotContext';
 import ActivePollsBox from 'modules/polling/components/review/ActivePollsBox';
@@ -32,6 +31,7 @@ import { SupportedNetworks } from 'modules/web3/constants/networks';
 import { ErrorBoundary } from 'modules/app/components/ErrorBoundary';
 import AccountNotConnected from 'modules/web3/components/AccountNotConnected';
 import TooltipComponent from 'modules/app/components/Tooltip';
+import { useNetwork } from 'modules/web3/hooks/useNetwork';
 
 const PollingReview = ({ polls }: PollingReviewPageData) => {
   const { trackButtonClick } = useAnalytics(ANALYTICS_PAGES.POLLING_REVIEW);
@@ -356,7 +356,7 @@ const PollingReview = ({ polls }: PollingReviewPageData) => {
 };
 
 export default function PollingReviewPage({ polls: prefetchedPolls }: PollingReviewPageData): JSX.Element {
-  const { network } = useWeb3React();
+  const { network } = useNetwork();
 
   const fallbackData = isDefaultNetwork(network)
     ? {

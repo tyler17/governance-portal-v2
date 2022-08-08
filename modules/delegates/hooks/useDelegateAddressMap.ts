@@ -1,4 +1,4 @@
-import { useWeb3React } from '@web3-react/core';
+import { useNetwork } from 'modules/web3/hooks/useNetwork';
 import useSWR, { useSWRConfig } from 'swr';
 import { Delegate } from '../types';
 
@@ -9,7 +9,7 @@ type DelegateAddressMapResponse = {
 };
 
 export const useDelegateAddressMap = (): DelegateAddressMapResponse => {
-  const { network } = useWeb3React();
+  const { network } = useNetwork();
   const { cache } = useSWRConfig();
   const dataKey = `/api/delegates/names?network=${network}`;
 

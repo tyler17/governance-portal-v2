@@ -23,13 +23,13 @@ import { InternalLink } from 'modules/app/components/InternalLink';
 import { Menu, MenuButton, MenuItem, MenuList } from '@reach/menu-button';
 import { useGasPrice } from 'modules/web3/hooks/useGasPrice';
 import { ExternalLink } from '../ExternalLink';
-import { useWeb3React } from '@web3-react/core';
 import useSWR, { useSWRConfig } from 'swr';
 import { PollsResponse } from 'modules/polling/types/pollsResponse';
 import { Proposal } from 'modules/executive/types';
 import { fetchJson } from 'lib/fetchJson';
 import { isActivePoll } from 'modules/polling/helpers/utils';
 import { GASNOW_URL, SupportedNetworks } from 'modules/web3/constants/networks';
+import { useNetwork } from 'modules/web3/hooks/useNetwork';
 
 const MenuItemContent = ({ label, icon }) => {
   return (
@@ -132,7 +132,7 @@ const Header = (): JSX.Element => {
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const bpi = useBreakpointIndex();
   const { account } = useAccount();
-  const { network } = useWeb3React();
+  const { network } = useNetwork();
   const { data: gas } = useGasPrice({ network });
   const { cache } = useSWRConfig();
   const [mode, setMode] = useColorMode();

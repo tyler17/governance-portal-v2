@@ -9,8 +9,8 @@ import { useContractAddress } from 'modules/web3/hooks/useContractAddress';
 import { useTotalSupply } from 'modules/web3/hooks/useTotalSupply';
 import { BigNumberWAD } from 'modules/web3/constants/numbers';
 import { getEtherscanLink } from 'modules/web3/helpers/getEtherscanLink';
-import { useWeb3React } from '@web3-react/core';
 import { Tokens } from 'modules/web3/constants/tokens';
+import { useNetwork } from 'modules/web3/hooks/useNetwork';
 
 export function DelegatesSystemInfo({
   stats,
@@ -20,7 +20,7 @@ export function DelegatesSystemInfo({
   className?: string;
 }): React.ReactElement {
   const delegateFactoryAddress = useContractAddress('voteDelegateFactory');
-  const { network } = useWeb3React();
+  const { network } = useNetwork();
 
   const { data: totalMkr } = useTotalSupply(Tokens.MKR);
 

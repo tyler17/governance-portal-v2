@@ -2,7 +2,6 @@ import React from 'react';
 import { Flex, Text, Box } from 'theme-ui';
 import { Icon } from '@makerdao/dai-ui-icons';
 import { formatDateWithTime } from 'lib/datetime';
-import { useWeb3React } from '@web3-react/core';
 import DelegateAvatarName from 'modules/delegates/components/DelegateAvatarName';
 import AddressIconBox from 'modules/address/components/AddressIconBox';
 import { ParsedExecutiveComments, PollCommentsAPIResponseItemWithWeight } from '../types/comments';
@@ -10,7 +9,7 @@ import { getEtherscanLink } from 'modules/web3/helpers/getEtherscanLink';
 import { InternalLink } from 'modules/app/components/InternalLink';
 import { ExternalLink } from 'modules/app/components/ExternalLink';
 import { formatValue } from 'lib/string';
-import { parseUnits } from 'ethers/lib/utils';
+import { useNetwork } from 'modules/web3/hooks/useNetwork';
 
 export default function CommentItem({
   comment,
@@ -19,7 +18,7 @@ export default function CommentItem({
   comment: PollCommentsAPIResponseItemWithWeight | ParsedExecutiveComments;
   votedOption?: React.ReactNode;
 }): React.ReactElement {
-  const { network } = useWeb3React();
+  const { network } = useNetwork();
 
   return (
     <Box>

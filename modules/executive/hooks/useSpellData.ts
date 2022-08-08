@@ -1,7 +1,7 @@
 import useSWR, { useSWRConfig } from 'swr';
 import { SpellData } from 'modules/executive/types/spellData';
-import { useWeb3React } from '@web3-react/core';
 import { fetchJson } from 'lib/fetchJson';
+import { useNetwork } from 'modules/web3/hooks/useNetwork';
 
 type SpellDataResponse = {
   data?: SpellData;
@@ -11,7 +11,7 @@ type SpellDataResponse = {
 };
 
 export const useSpellData = (proposalAddress: string): SpellDataResponse => {
-  const { network } = useWeb3React();
+  const { network } = useNetwork();
 
   const dataKey = proposalAddress
     ? `/api/executive/analyze-spell/${proposalAddress}?network=${network}`

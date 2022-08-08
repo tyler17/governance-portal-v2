@@ -7,12 +7,10 @@ import range from 'lodash/range';
 import isNil from 'lodash/isNil';
 import isEqual from 'lodash/isEqual';
 import lottie from 'lottie-web';
-
 import { Poll } from 'modules/polling/types';
 import { extractCurrentPollVote, isActivePoll, isInputFormatRankFree } from 'modules/polling/helpers/utils';
 import Stack from 'modules/app/components/layout/layouts/Stack';
 import { useAllUserVotes } from 'modules/polling/hooks/useAllUserVotes';
-
 import RankedChoiceSelect from './RankedChoiceSelect';
 import SingleSelect from './SingleSelect';
 import { useRouter } from 'next/router';
@@ -24,8 +22,8 @@ import { ANALYTICS_PAGES } from 'modules/app/client/analytics/analytics.constant
 import useSWR from 'swr';
 import { fetchJson } from 'lib/fetchJson';
 import { useAccount } from 'modules/app/hooks/useAccount';
-import { useWeb3React } from '@web3-react/core';
 import { BallotContext } from '../context/BallotContext';
+import { useNetwork } from 'modules/web3/hooks/useNetwork';
 
 enum ViewState {
   START,
@@ -52,7 +50,7 @@ export default function MobileVoteSheet({
   const { trackButtonClick } = useAnalytics(ANALYTICS_PAGES.POLLING);
   const { account, voteDelegateContractAddress } = useAccount();
 
-  const { network } = useWeb3React();
+  const { network } = useNetwork();
   const addressToCheck = voteDelegateContractAddress ? voteDelegateContractAddress : account;
   const { data: allUserVotes } = useAllUserVotes(addressToCheck);
 

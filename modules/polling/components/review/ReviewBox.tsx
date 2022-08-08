@@ -3,7 +3,6 @@ import { Card, Box, Flex, Button, Text } from 'theme-ui';
 import { Icon } from '@makerdao/dai-ui-icons';
 import { useBreakpointIndex } from '@theme-ui/match-media';
 import { getEtherscanLink } from 'modules/web3/helpers/getEtherscanLink';
-import { useWeb3React } from '@web3-react/core';
 import { Poll } from 'modules/polling/types';
 import { TXMined } from 'modules/web3/types/transaction';
 import TxIndicators from 'modules/app/components/TxIndicators';
@@ -14,6 +13,7 @@ import { BallotContext } from 'modules/polling/context/BallotContext';
 import ActivePollsBox from './ActivePollsBox';
 import { ExternalLink } from 'modules/app/components/ExternalLink';
 import { InternalLink } from 'modules/app/components/InternalLink';
+import { useNetwork } from 'modules/web3/hooks/useNetwork';
 
 const ReviewBoxCard = ({ children, ...props }) => (
   <Card variant="compact" p={[0, 0]} {...props}>
@@ -33,7 +33,7 @@ export default function ReviewBox({
 
   const { transaction, clearTransaction, ballot, commentsSignature } = useContext(BallotContext);
 
-  const { network } = useWeb3React();
+  const { network } = useNetwork();
 
   const bpi = useBreakpointIndex();
 

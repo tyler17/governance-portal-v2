@@ -1,7 +1,7 @@
 import { fetchJson } from 'lib/fetchJson';
-import { useWeb3React } from '@web3-react/core';
 import useSWR from 'swr';
 import { PollTally } from '../types';
+import { useNetwork } from 'modules/web3/hooks/useNetwork';
 
 type UsePollTallyResponse = {
   tally: PollTally | undefined;
@@ -11,7 +11,7 @@ type UsePollTallyResponse = {
 };
 
 export function usePollTally(pollId: number, refreshInterval = 0): UsePollTallyResponse {
-  const { network } = useWeb3React();
+  const { network } = useNetwork();
   const {
     data: tallyData,
     mutate,

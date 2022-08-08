@@ -2,7 +2,6 @@ import { useEffect } from 'react';
 import { Button, Card, Flex, Text, Heading } from 'theme-ui';
 import PrimaryLayout from 'modules/app/components/layout/layouts/Primary';
 import { useState } from 'react';
-import { useWeb3React } from '@web3-react/core';
 import { useAccount } from 'modules/app/hooks/useAccount';
 import { useVotedProposals } from 'modules/executive/hooks/useVotedProposals';
 import VoteModal from 'modules/executive/components/VoteModal';
@@ -12,6 +11,7 @@ import { DEFAULT_NETWORK } from 'modules/web3/constants/networks';
 import { ExternalLink } from 'modules/app/components/ExternalLink';
 import { getEtherscanLink } from 'modules/web3/helpers/getEtherscanLink';
 import { SpellDetailsOverview } from 'modules/executive/components/SpellDetailsOverview';
+import { useNetwork } from 'modules/web3/hooks/useNetwork';
 
 type Props = {
   spellAddress: string;
@@ -20,7 +20,7 @@ type Props = {
 
 export default function CustomSpellAddress({ spellAddress, spellDetails }: Props): JSX.Element {
   const [voting, setVoting] = useState(false);
-  const { network } = useWeb3React();
+  const { network } = useNetwork();
   const { account, voteDelegateContractAddress, voteProxyContractAddress } = useAccount();
   const address = voteDelegateContractAddress || voteProxyContractAddress || account;
 

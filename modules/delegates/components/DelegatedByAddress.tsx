@@ -9,13 +9,13 @@ import Tooltip from 'modules/app/components/Tooltip';
 import { DelegationHistory } from 'modules/delegates/types';
 import { getEtherscanLink } from 'modules/web3/helpers/getEtherscanLink';
 import { formatDateWithTime } from 'lib/datetime';
-import { useWeb3React } from '@web3-react/core';
 import { SupportedNetworks } from 'modules/web3/constants/networks';
 import { BigNumber } from 'ethers';
 import { formatValue } from 'lib/string';
 import { parseUnits } from 'ethers/lib/utils';
 import { BigNumberJS } from 'lib/bigNumberJs';
 import AddressIconBox from 'modules/address/components/AddressIconBox';
+import { useNetwork } from 'modules/web3/hooks/useNetwork';
 
 type DelegatedByAddressProps = {
   delegators: DelegationHistory[];
@@ -173,7 +173,7 @@ const CollapsableRow = ({ delegator, network, bpi, totalDelegated }: Collapsable
 
 const DelegatedByAddress = ({ delegators, totalDelegated }: DelegatedByAddressProps): JSX.Element => {
   const bpi = useBreakpointIndex();
-  const { network } = useWeb3React();
+  const { network } = useNetwork();
 
   const [sortBy, setSortBy] = useState({
     type: 'mkr',

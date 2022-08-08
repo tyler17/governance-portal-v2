@@ -1,7 +1,7 @@
 import { fetchJson } from 'lib/fetchJson';
 import useSWR from 'swr';
 import { PollCommentsAPIResponseItem } from '../types/comments';
-import { useWeb3React } from '@web3-react/core';
+import { useNetwork } from 'modules/web3/hooks/useNetwork';
 
 type UsePollCommentsResponse = {
   comments: PollCommentsAPIResponseItem[] | undefined;
@@ -10,7 +10,7 @@ type UsePollCommentsResponse = {
 };
 
 export function usePollComments(pollId: number, refreshInterval = 0): UsePollCommentsResponse {
-  const { network } = useWeb3React();
+  const { network } = useNetwork();
 
   const {
     data: commentsDatas,

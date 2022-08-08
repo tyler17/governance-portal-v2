@@ -17,10 +17,10 @@ import { AddressDetail } from 'modules/address/components/AddressDetail';
 import { DelegateDetail } from 'modules/delegates/components';
 import { HeadComponent } from 'modules/app/components/layout/Head';
 import ManageDelegation from 'modules/delegates/components/ManageDelegation';
-import { useWeb3React } from '@web3-react/core';
 import useSWR, { useSWRConfig } from 'swr';
 import { ErrorBoundary } from 'modules/app/components/ErrorBoundary';
 import { InternalLink } from 'modules/app/components/InternalLink';
+import { useNetwork } from 'modules/web3/hooks/useNetwork';
 
 const AddressView = ({ addressInfo }: { addressInfo: AddressApiResponse }) => {
   const bpi = useBreakpointIndex({ defaultIndex: 2 });
@@ -92,7 +92,7 @@ const AddressView = ({ addressInfo }: { addressInfo: AddressApiResponse }) => {
 export default function AddressPage(): JSX.Element {
   const router = useRouter();
   const { address } = router.query;
-  const { network } = useWeb3React();
+  const { network } = useNetwork();
   const { cache } = useSWRConfig();
 
   const dataKeyAccount = `/api/address/${address}?network=${network}`;

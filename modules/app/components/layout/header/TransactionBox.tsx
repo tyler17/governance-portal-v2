@@ -1,9 +1,8 @@
 import { Flex, Text, Spinner, Button, Link as ExternalLink } from 'theme-ui';
 import { Icon } from '@makerdao/dai-ui-icons';
-
 import { getEtherscanLink } from 'modules/web3/helpers/getEtherscanLink';
 import { Transaction, TXPending } from 'modules/web3/types/transaction';
-import { useWeb3React } from '@web3-react/core';
+import { useNetwork } from 'modules/web3/hooks/useNetwork';
 
 type Props = {
   tx: Transaction;
@@ -14,7 +13,7 @@ type MainProps = {
   txs: Transaction[];
 };
 const TransactionRow = ({ tx, index }: Props): JSX.Element => {
-  const { network } = useWeb3React();
+  const { network } = useNetwork();
 
   return (
     <Flex

@@ -1,4 +1,4 @@
-import { useWeb3React } from '@web3-react/core';
+import { useNetwork } from 'modules/web3/hooks/useNetwork';
 import useSWR, { useSWRConfig } from 'swr';
 import { getMKRVotingWeight, MKRVotingWeightResponse } from '../helpers/getMKRVotingWeight';
 
@@ -10,7 +10,7 @@ type VotingWeightResponse = {
 };
 
 export const useMKRVotingWeight = (address?: string): VotingWeightResponse => {
-  const { network } = useWeb3React();
+  const { network } = useNetwork();
   const { cache } = useSWRConfig();
 
   const dataKey = `/user/polling-voting-weight/${address}/${network}`;

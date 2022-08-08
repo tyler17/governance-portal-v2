@@ -3,13 +3,12 @@ import { Button, Flex, Close, Text, Box, Spinner, Link as ExternalLink } from 't
 import { Icon } from '@makerdao/dai-ui-icons';
 import { useBreakpointIndex } from '@theme-ui/match-media';
 import { DialogOverlay, DialogContent } from '@reach/dialog';
-
 import { fadeIn, slideUp } from 'lib/keyframes';
 import { getEtherscanLink } from 'modules/web3/helpers/getEtherscanLink';
 import { TXMined } from 'modules/web3/types/transaction';
 import { Poll } from 'modules/polling/types';
-import { useWeb3React } from '@web3-react/core';
 import { usePollCreate } from '../hooks/usePollCreate';
+import { useNetwork } from 'modules/web3/hooks/useNetwork';
 
 type Props = {
   close: () => void;
@@ -130,7 +129,7 @@ const Signing = ({ close }) => (
 );
 
 const Pending = ({ tx, close }) => {
-  const { network } = useWeb3React();
+  const { network } = useNetwork();
 
   return (
     <Flex sx={{ flexDirection: 'column', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>

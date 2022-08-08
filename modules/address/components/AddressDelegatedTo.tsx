@@ -2,7 +2,6 @@ import { Box, Text, Flex, IconButton, Heading } from 'theme-ui';
 import { useBreakpointIndex } from '@theme-ui/match-media';
 import { Icon } from '@makerdao/dai-ui-icons';
 import BigNumber from 'lib/bigNumberJs';
-import { useWeb3React } from '@web3-react/core';
 import Skeleton from 'modules/app/components/SkeletonThemed';
 import { DelegationHistoryWithExpirationDate } from 'modules/delegates/types';
 import { useState } from 'react';
@@ -16,6 +15,7 @@ import AddressIconBox from './AddressIconBox';
 import { parseUnits } from 'ethers/lib/utils';
 import { formatValue } from 'lib/string';
 import { DateWithHover } from 'modules/app/components/DateWithHover';
+import { useNetwork } from 'modules/web3/hooks/useNetwork';
 
 type CollapsableRowProps = {
   delegate: DelegationHistoryWithExpirationDate;
@@ -179,7 +179,7 @@ type AddressDelegatedToProps = {
 
 const AddressDelegatedTo = ({ delegatedTo, totalDelegated }: AddressDelegatedToProps): JSX.Element => {
   const bpi = useBreakpointIndex();
-  const { network } = useWeb3React();
+  const { network } = useNetwork();
 
   return (
     <Box>
