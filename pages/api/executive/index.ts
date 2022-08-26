@@ -84,5 +84,5 @@ export default withApiHandler(async (req: NextApiRequest, res: NextApiResponse<P
   );
 
   res.setHeader('Cache-Control', 's-maxage=15, stale-while-revalidate');
-  res.status(200).json(response);
+  return res.status(200).json(response);
 });

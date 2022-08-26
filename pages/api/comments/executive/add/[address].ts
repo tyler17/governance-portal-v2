@@ -54,7 +54,7 @@ export default withApiHandler(
 
     await insertExecutiveComment(newComment);
 
-    res.status(200).json({ success: 'Added Successfully' });
+    return res.status(200).json({ success: 'Added Successfully' });
   },
   { allowPost: true }
 );

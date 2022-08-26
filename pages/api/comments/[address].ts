@@ -15,6 +15,6 @@ export default withApiHandler(
     const address = req.query.address as string;
     const response = await getCommentsByAddress(address, network);
     res.setHeader('Cache-Control', 's-maxage=1, stale-while-revalidate');
-    res.status(200).json(response);
+    return res.status(200).json(response);
   }
 );

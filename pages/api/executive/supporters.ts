@@ -20,8 +20,7 @@ export default withApiHandler(async (req: NextApiRequest, res: NextApiResponse) 
   res.setHeader('Cache-Control', 's-maxage=300, stale-while-revalidate');
 
   if (cached) {
-    res.status(200).json(cached);
-    return;
+    return res.status(200).json(cached);
   }
 
   const chief = getContracts(networkNameToChainId(network), undefined, undefined, true).chief;
@@ -35,5 +34,5 @@ export default withApiHandler(async (req: NextApiRequest, res: NextApiResponse) 
   });
 
   cacheSet(executiveSupportersCacheKey, JSON.stringify(allSupporters), network, FIVE_MINUTES_IN_MS);
-  res.status(200).json(allSupporters);
+  return res.status(200).json(allSupporters);
 });

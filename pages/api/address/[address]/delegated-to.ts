@@ -61,7 +61,7 @@ export default withApiHandler(
     }, new BigNumber(0));
 
     res.setHeader('Cache-Control', 's-maxage=15, stale-while-revalidate');
-    res.status(200).json({
+    return res.status(200).json({
       delegatedTo: filtered,
       totalDelegated: totalDelegated.toNumber()
     });

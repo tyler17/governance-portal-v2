@@ -9,7 +9,7 @@ export default withApiHandler(
     invariant(address && address.length > 0, 'Missing address');
     const nonce = await generateNonce(address);
 
-    res.status(200).json({ nonce });
+    return res.status(200).json({ nonce });
   },
   { allowPost: true }
 );

@@ -43,10 +43,15 @@ export default withApiHandler(
 
       await insertPollComments(commentsToInsert);
 
-      res.status(200).json({ success: 'Added Successfully' });
+      return res.status(200).json({ success: 'Added Successfully' });
     } catch (err) {
       logger.error(`POST /api/comments/polling/add: ${err}`);
-      return res.status(500).json({});
+      return res.status(500).json({
+        error: {
+          code: 'unexpected_error',
+          message: 'An unexpected error occurred.'
+        }
+      });
     }
   },
   { allowPost: true }

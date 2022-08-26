@@ -27,5 +27,5 @@ export default withApiHandler(async (req: NextApiRequest, res: NextApiResponse) 
   res.setHeader('Cache-Control', 's-maxage=15, stale-while-revalidate');
 
   cacheSet(cacheKey, JSON.stringify(data), network, TEN_MINUTES_IN_MS);
-  res.status(200).json(data);
+  return res.status(200).json(data);
 });

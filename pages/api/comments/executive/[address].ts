@@ -75,5 +75,5 @@ export default withApiHandler(async (req: NextApiRequest, res: NextApiResponse) 
   const response = await getExecutiveComments(spellAddress, network);
   res.setHeader('Cache-Control', 's-maxage=1, stale-while-revalidate');
 
-  res.status(200).json(response);
+  return res.status(200).json(response);
 });
