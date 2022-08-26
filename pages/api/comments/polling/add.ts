@@ -4,55 +4,44 @@ import { PollComment, PollsCommentsRequestBody } from 'modules/comments/types/co
 import withApiHandler from 'modules/app/api/withApiHandler';
 import { verifyCommentParameters } from 'modules/comments/api/verifyCommentParameters';
 import { insertPollComments } from 'modules/comments/api/insertPollingComments';
-import logger from 'lib/logger';
 
 export default withApiHandler(
   async (req: NextApiRequest, res: NextApiResponse) => {
-    try {
-      const body = req.body as PollsCommentsRequestBody;
+    const body = req.body as PollsCommentsRequestBody;
 
-      if (!req.query.network || !body.txHash || !body.comments || !body.voterAddress || !body.hotAddress) {
-        throw new Error('Unsupported parameters');
-      }
-
-      const network = req.query.network as SupportedNetworks;
-
-      // Verifies the data
-      const resultVerify = await verifyCommentParameters(
-        body.hotAddress,
-        body.voterAddress,
-        body.signedMessage,
-        body.txHash,
-        network
-      );
-
-      // TODO: check that the transaction is from a real polling contract
-      // console.log(transaction);
-
-      const commentsToInsert: PollComment[] = body.comments.map(comment => ({
-        pollId: comment.pollId as number,
-        comment: comment.comment as string,
-        hotAddress: body.hotAddress?.toLowerCase() || '',
-        accountType: resultVerify,
-        commentType: 'poll',
-        network,
-        date: new Date(),
-        voterAddress: body.voterAddress.toLowerCase(),
-        txHash: body.txHash
-      }));
-
-      await insertPollComments(commentsToInsert);
-
-      return res.status(200).json({ success: 'Added Successfully' });
-    } catch (err) {
-      logger.error(`POST /api/comments/polling/add: ${err}`);
-      return res.status(500).json({
-        error: {
-          code: 'unexpected_error',
-          message: 'An unexpected error occurred.'
-        }
-      });
+    if (!req.query.network || !body.txHash || !body.comments || !body.voterAddress || !body.hotAddress) {
+      throw new Error('Unsupported parameters');
     }
+
+    const network = req.query.network as SupportedNetworks;
+
+    // Verifies the data
+    const resultVerify = await verifyCommentParameters(
+      body.hotAddress,
+      body.voterAddress,
+      body.signedMessage,
+      body.txHash,
+      network
+    );
+
+    // TODO: check that the transaction is from a real polling contract
+    // console.log(transaction);
+
+    const commentsToInsert: PollComment[] = body.comments.map(comment => ({
+      pollId: comment.pollId as number,
+      comment: comment.comment as string,
+      hotAddress: body.hotAddress?.toLowerCase() || '',
+      accountType: resultVerify,
+      commentType: 'poll',
+      network,
+      date: new Date(),
+      voterAddress: body.voterAddress.toLowerCase(),
+      txHash: body.txHash
+    }));
+
+    await insertPollComments(commentsToInsert);
+
+    return res.status(200).json({ success: 'Added Successfully' });
   },
   { allowPost: true }
 );

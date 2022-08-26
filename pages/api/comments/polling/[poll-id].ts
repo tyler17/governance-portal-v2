@@ -1,9 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { DEFAULT_NETWORK, SupportedNetworks } from 'modules/web3/constants/networks';
-import { PollCommentsAPIResponseItem } from 'modules/comments/types/comments';
 import { getPollComments } from 'modules/comments/api/getPollComments';
 import withApiHandler from 'modules/app/api/withApiHandler';
-import logger from 'lib/logger';
 
 /**
  * @swagger
@@ -62,23 +60,13 @@ import logger from 'lib/logger';
  *                     $ref: '#/definitions/Address'
  */
 export default withApiHandler(async (req: NextApiRequest, res: NextApiResponse) => {
-  try {
-    const network = (req.query.network as SupportedNetworks) || DEFAULT_NETWORK.network;
+  const network = (req.query.network as SupportedNetworks) || DEFAULT_NETWORK.network;
 
-    const pollId = parseInt(req.query['poll-id'] as string, 10);
+  const pollId = parseInt(req.query['poll-id'] as string, 10);
 
-    const response = await getPollComments(pollId, network);
+  const response = await getPollComments(pollId, network);
 
-    res.setHeader('Cache-Control', 's-maxage=1, stale-while-revalidate');
-    // only return the latest comment from each address
-    return res.status(200).json(response);
-  } catch (err) {
-    logger.error(`/api/comments/polling: ${err}`);
-    return res.status(500).json({
-      error: {
-        code: 'unexpected_error',
-        message: 'An unexpected error occurred.'
-      }
-    });
-  }
+  res.setHeader('Cache-Control', 's-maxage=1, stale-while-revalidate');
+  // only return the latest comment from each address
+  return res.status(200).json(response);
 });

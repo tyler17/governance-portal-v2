@@ -26,13 +26,9 @@ export default withApiHandler(
       return res.status(400).json({ error: 'Request missing parameters' });
     }
 
-    try {
-      const data = await postRequestToDiscord(JSON.stringify(body));
-      res.setHeader('Cache-Control', 's-maxage=30, stale-while-revalidate');
-      return res.status(200).json({ data });
-    } catch (err) {
-      return res.status(500).json({ error: 'Internal server error' });
-    }
+    const data = await postRequestToDiscord(JSON.stringify(body));
+    res.setHeader('Cache-Control', 's-maxage=30, stale-while-revalidate');
+    return res.status(200).json({ data });
   },
   { allowPost: true }
 );

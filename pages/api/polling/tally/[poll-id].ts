@@ -5,7 +5,6 @@ import { getPollTally } from 'modules/polling/helpers/getPollTally';
 import { fetchPollById } from 'modules/polling/api/fetchPollBy';
 import { pollHasStarted } from 'modules/polling/helpers/utils';
 import { PollTally } from 'modules/polling/types';
-import logger from 'lib/logger';
 
 // Returns a PollTally given a pollID
 
@@ -122,42 +121,32 @@ import logger from 'lib/logger';
  *               $ref: '#/definitions/Tally'
  */
 export default withApiHandler(async (req: NextApiRequest, res: NextApiResponse) => {
-  try {
-    const network = (req.query.network as SupportedNetworks) || DEFAULT_NETWORK.network;
-    const poll = await fetchPollById(parseInt(req.query['poll-id'] as string, 10), network);
+  const network = (req.query.network as SupportedNetworks) || DEFAULT_NETWORK.network;
+  const poll = await fetchPollById(parseInt(req.query['poll-id'] as string, 10), network);
 
-    if (!poll) {
-      return res.status(404).json({
-        error: 'Not found'
-      });
-    }
-
-    if (!pollHasStarted(poll)) {
-      const emptyTally: PollTally = {
-        parameters: poll.parameters,
-        numVoters: 0,
-        results: [],
-        totalMkrParticipation: 0,
-        totalMkrActiveParticipation: 0,
-        victoryConditionMatched: null,
-        winner: null,
-        winningOptionName: '',
-        votesByAddress: []
-      };
-
-      return res.status(200).json(emptyTally);
-    }
-    const tally = await getPollTally(poll, network);
-
-    res.setHeader('Cache-Control', 's-maxage=15, stale-while-revalidate');
-    return res.status(200).json(tally);
-  } catch (err) {
-    logger.error(`/api/polling/tally: ${err}`);
-    return res.status(500).json({
-      error: {
-        code: 'unexpected_error',
-        message: 'An unexpected error occurred.'
-      }
+  if (!poll) {
+    return res.status(404).json({
+      error: 'Not found'
     });
   }
+
+  if (!pollHasStarted(poll)) {
+    const emptyTally: PollTally = {
+      parameters: poll.parameters,
+      numVoters: 0,
+      results: [],
+      totalMkrParticipation: 0,
+      totalMkrActiveParticipation: 0,
+      victoryConditionMatched: null,
+      winner: null,
+      winningOptionName: '',
+      votesByAddress: []
+    };
+
+    return res.status(200).json(emptyTally);
+  }
+  const tally = await getPollTally(poll, network);
+
+  res.setHeader('Cache-Control', 's-maxage=15, stale-while-revalidate');
+  return res.status(200).json(tally);
 });

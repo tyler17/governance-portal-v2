@@ -1,4 +1,3 @@
-import invariant from 'tiny-invariant';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { getPolls } from 'modules/polling/api/fetchPolls';
 import withApiHandler from 'modules/app/api/withApiHandler';
@@ -61,30 +60,20 @@ import logger from 'lib/logger';
  *                   $ref: '#/definitions/PollStats'
  */
 export default withApiHandler(async (req: NextApiRequest, res: NextApiResponse) => {
-  try {
-    const network = (req.query.network as string) || DEFAULT_NETWORK.network;
-    if (!isSupportedNetwork(network)) {
-      logger.error(`all-polls: unsupported network ${network}`);
-      return res.status(400);
-    }
-
-    const filters = {
-      startDate: req.query.startDate ? new Date(req.query.startDate as string) : null,
-      endDate: req.query.endDate ? new Date(req.query.endDate as string) : null,
-      tags: req.query.tags ? (typeof req.query.tags === 'string' ? [req.query.tags] : req.query.tags) : null
-    };
-
-    const pollsResponse = await getPolls(filters, network);
-
-    res.setHeader('Cache-Control', 's-maxage=15, stale-while-revalidate');
-    return res.status(200).json(pollsResponse);
-  } catch (err) {
-    logger.error(`all-polls: ${err}`);
-    return res.status(500).json({
-      error: {
-        code: 'unexpected_error',
-        message: 'An unexpected error occurred.'
-      }
-    });
+  const network = (req.query.network as string) || DEFAULT_NETWORK.network;
+  if (!isSupportedNetwork(network)) {
+    logger.error(`all-polls: unsupported network ${network}`);
+    return res.status(400);
   }
+
+  const filters = {
+    startDate: req.query.startDate ? new Date(req.query.startDate as string) : null,
+    endDate: req.query.endDate ? new Date(req.query.endDate as string) : null,
+    tags: req.query.tags ? (typeof req.query.tags === 'string' ? [req.query.tags] : req.query.tags) : null
+  };
+
+  const pollsResponse = await getPolls(filters, network);
+
+  res.setHeader('Cache-Control', 's-maxage=15, stale-while-revalidate');
+  return res.status(200).json(pollsResponse);
 });
