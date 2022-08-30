@@ -13,4 +13,5 @@ export type InstantRunoffResults = {
   rounds: number;
   winner: number | null;
   options: InstantRunoffOptions;
+  roundsData: Record<number, InstantRunoffOptions>;
 };

@@ -12,6 +12,7 @@ export function extractWinnerInstantRunoff(currentVotes: ParsedSpockVote[]): Ins
   let totalMKR = new BigNumber(0);
   let winner;
   let rounds = 1;
+  let roundsData = {};
 
   const defaultOptionObj: InstantRunoffOption = {
     mkrSupport: new BigNumber(0),
@@ -60,12 +61,20 @@ export function extractWinnerInstantRunoff(currentVotes: ParsedSpockVote[]): Ins
   // if so we're done; return the winner
   if (winner) {
     options[winner].winner = true;
+    roundsData[rounds] = options;
     return {
       options,
       winner,
-      rounds
+      rounds,
+      roundsData
     };
   }
+
+  // add first round of results to roundsData
+  roundsData = {
+    ...roundsData,
+    [rounds]: JSON.parse(JSON.stringify(options))
+  };
 
   // if we couldn't find a winner based on first preferences, run additional rounds until we find one
   while (typeof winner === 'undefined') {
@@ -139,6 +148,14 @@ export function extractWinnerInstantRunoff(currentVotes: ParsedSpockVote[]): Ins
       }
     });
 
+    // add next round of results to roundsData
+    roundsData = {
+      ...roundsData,
+      [rounds]: JSON.parse(JSON.stringify(options))
+    };
+    console.log(rounds);
+    console.log(roundsData);
+
     // count the number of options that haven't been eliminated
     const remainingOptions = Object.entries(options).filter(
       ([, optionDetails]) => !optionDetails.eliminated
@@ -150,7 +167,8 @@ export function extractWinnerInstantRunoff(currentVotes: ParsedSpockVote[]): Ins
       return {
         options,
         winner: null,
-        rounds
+        rounds,
+        roundsData
       };
     }
 
@@ -161,7 +179,8 @@ export function extractWinnerInstantRunoff(currentVotes: ParsedSpockVote[]): Ins
       return {
         options,
         winner: null,
-        rounds
+        rounds,
+        roundsData
       };
     }
     if (Object.keys(options).length === 1) {
@@ -175,6 +194,7 @@ export function extractWinnerInstantRunoff(currentVotes: ParsedSpockVote[]): Ins
   return {
     options,
     winner,
-    rounds
+    rounds,
+    roundsData
   };
 }

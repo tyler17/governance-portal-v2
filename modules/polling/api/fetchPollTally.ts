@@ -248,7 +248,8 @@ export async function fetchPollTally(poll: Poll, network: SupportedNetworks): Pr
     totalMkrActiveParticipation: totalMkrActiveParticipation.toString(),
     winningOptionName: winnerOption.winner ? poll.options[winnerOption.winner] : 'None found',
     results,
-    rounds: winnerOption.results?.rounds
+    rounds: winnerOption.results?.rounds,
+    roundsData: winnerOption.results?.roundsData
   };
 
   return tally;

@@ -1,4 +1,5 @@
 import BigNumber from 'lib/bigNumberJs';
+import { InstantRunoffOptions } from './instantRunoff';
 import { PollParameters } from './poll';
 
 export type PollTallyVote = {
@@ -29,4 +30,5 @@ export type PollTally = {
   victoryConditionMatched: number | null;
   votesByAddress?: PollTallyVote[];
   rounds?: number;
+  roundsData?: Record<number, InstantRunoffOptions>;
 };
