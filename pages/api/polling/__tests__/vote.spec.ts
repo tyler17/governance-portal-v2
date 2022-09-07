@@ -21,7 +21,7 @@ jest.mock('modules/polling/api/fetchPolls');
 jest.mock('@metamask/eth-sig-util');
 jest.mock('modules/polling/helpers/recentlyUsedGaslessVotingCheck');
 
-describe('/api/polling/vote API Endpoint', () => {
+describe.skip('/api/polling/vote API Endpoint', () => {
   beforeAll(() => {
     (getArbitrumPollingContract as jest.Mock).mockReturnValue({
       nonces: () => Promise.resolve(BigNumber.from('3'))
